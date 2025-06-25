@@ -86,13 +86,13 @@ class FormulationIngredient(models.Model):
     A model representing an ingredient within a formulation,
     including its percentage.
     """
-    formulation = models.ForeignKey(Formulation, on_delete=models.CASCADE, help_text="The formulation this ingredient belongs to")
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, help_text="The ingredient in this formulation")
+    formulation = models.ForeignKey(Formulation, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     percentage = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
-        help_text="Percentage of this ingredient in the formula (e.g., 5.00 for 5%)"
+        # help_text="Percentage of this ingredient in the formula (e.g., 5.00 for 5%)"
     )
     instructions = models.TextField(blank=True, null=True, help_text="Step-by-step instructions for ingredient addition")
     # ensure, that order in which ingredients were inputed, stays the same

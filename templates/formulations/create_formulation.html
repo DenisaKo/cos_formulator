@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create New Formulation{% endblock %}
+
+{% block content %}
+
+<section class="bg-green-50 dark:bg-gray-900">
+    <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">New Formulation</h2>
+    
+        <form action="{% url 'create_formulation' %}" class="space-y-8" method="post">
+
+            {% csrf_token %}
+
+            <div class="bg-white p-6 rounded shadow">
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            {{ field.label_tag }}
+                        </label>
+                        <input type="{{ field.widget_type }}" name="{{ field.html_name }}" id="{{ field.id_for_label }}"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="{{ field.label }}"
+                            {% if field.field.required %}required{% endif %}
+                            {% if field.value %}value="{{ field.value }}"{% endif %}
+                        >
+                     
+                        {% for error in field.errors %}
+                            <p class="text-red-500 text-xs italic">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="bg-white p-6 rounded shadow" >
+                <h2 class="py-3 block mb-2 text-lg font-medium text-gray-900 dark:text-white">Ingredients</h2>
+
+                <div id="ingredient-formset">
+                    {{ ingredient_formset.management_form }}
+                    {% for iform in ingredient_formset %}
+                        <div class="ingredient-form block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                
+                                <div>
+                                    <label for="{{ iform.ingredient.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Ingredient
+                                    </label>
+                                    {{ iform.ingredient }}
+                                    {% if iform.ingredient.errors %}
+                                        <p class="text-red-500 text-xs">{{ iform.ingredient.errors }}</p>
+                                    {% endif %}
+                                </div>
+                
+                                <div>
+                                    <label for="{{ iform.percentage.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Percentage (%)
+                                    </label>
+                                    {{ iform.percentage }}
+                                    {% if iform.percentage.errors %}
+                                        <p class="text-red-500 text-xs">{{ iform.percentage.errors }}</p>
+                                    {% endif %}
+                                </div>
+
+                                
+                
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                
+                <button type="button" id="add-ingredient" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-pink-700 sm:w-fit hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">
+                    + Add Ingredient
+               </button>
+            </div>
+
+
+            <button type="submit" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-green-700 sm:w-fit hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Save formulation</button>
+        </form>
+        
+    </div>
+  </section>
+
+{% endblock content %}
+
+

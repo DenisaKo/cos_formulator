@@ -24,8 +24,9 @@ def sign_up(request):
 def create_formulation_view(request):
 
     if request.method == 'POST':
+        # print("Submitted POST data:", request.POST)
         form = FormulationForm(request.POST)
-        ingredient_formset = FormulationIngredientFormSet(request.POST, prefix='form') 
+        # ingredient_formset = FormulationIngredientFormSet(request.POST, prefix='form') 
         
         if form.is_valid():
             # When creating a NEW formulation, the instance of it won't exist yet for the FormSet until the Formulation is saved. 
@@ -38,6 +39,7 @@ def create_formulation_view(request):
             if ingredient_formset.is_valid():
                 ingredient_formset.save()
                 return redirect('home')
+                
             else:
                 # If phase formset fails, delete the parent formulation that was just saved.
                 formulation.delete()

@@ -54,11 +54,6 @@ def create_formulation_view(request):
     return render(request, 'formulations/create_formulation.html', context)
 
 @login_required
-def formulation_list_view(request):
-    formulations = Formulation.objects.filter(user=request.user)
-    return render(request, 'formulations/formulation_list.html', {'formulations': formulations})
-
-@login_required
 def edit_formulation_view(request, pk):
     formulation = get_object_or_404(Formulation, pk=pk, user=request.user)
 
@@ -88,3 +83,16 @@ def edit_formulation_view(request, pk):
         'formulation': formulation,
     }
     return render(request, 'formulations/create_formulation.html', context)
+
+@login_required
+def profile_view(request):
+    user_formulations = Formulation.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'profile.html', {'formulations': user_formulations})
+
+@login_required
+def delete_formulation_view(request, pk):
+    formulation = get_object_or_404(Formulation, pk=pk, user=request.user)
+    if request.method == 'POST':
+        print("deleting formulation, ",  formulation)
+        formulation.delete()
+    return redirect('profile') 

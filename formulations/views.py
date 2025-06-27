@@ -38,7 +38,7 @@ def create_formulation_view(request):
 
             if ingredient_formset.is_valid():
                 ingredient_formset.save()
-                return redirect('home')
+                return redirect('formulation_list')
                 
             else:
                 # If phase formset fails, delete the parent formulation that was just saved.
@@ -53,3 +53,38 @@ def create_formulation_view(request):
     }
     return render(request, 'formulations/create_formulation.html', context)
 
+@login_required
+def formulation_list_view(request):
+    formulations = Formulation.objects.filter(user=request.user)
+    return render(request, 'formulations/formulation_list.html', {'formulations': formulations})
+
+@login_required
+def edit_formulation_view(request, pk):
+    formulation = get_object_or_404(Formulation, pk=pk, user=request.user)
+
+    if request.method == 'POST':
+        form = FormulationForm(request.POST, instance=formulation)
+        ingredient_formset = FormulationIngredientFormSet(request.POST, instance=formulation, prefix='form')
+
+        if form.is_valid():
+            # print("form is valid")
+            form.save()
+            if ingredient_formset.is_valid():
+                # print("ingredient_formset is valid")
+                ingredient_formset.save()
+                return redirect('formulation_list') 
+                # for ingredient_form in ingredient_formset:
+                #     print(ingredient_form.cleaned_data)
+        else: 
+            print("Formset errors:", ingredient_formset.errors)
+        
+    else:
+        form = FormulationForm(instance=formulation)
+        ingredient_formset = FormulationIngredientFormSet(instance=formulation, prefix='form')
+
+    context = {
+        'form': form,
+        'ingredient_formset': ingredient_formset,
+        'formulation': formulation,
+    }
+    return render(request, 'formulations/create_formulation.html', context)

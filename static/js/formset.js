@@ -58,7 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // tells Django to check the checkbox/input for deletion
             console.log("Before:", deleteField.checked); // false
             deleteField.checked = true;
+        
+            if (!deleteField.checked) deleteField.click();
             console.log("After:", deleteField.checked);  // true
+
             deleteField.value = "on";
             // hide from the user
             formRow.style.display = 'none';

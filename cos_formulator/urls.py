@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from formulations.views import home, sign_up, create_formulation_view
+from formulations.views import home, sign_up, create_formulation_view, formulation_list_view, edit_formulation_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +24,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/register/', sign_up, name='register'),
     path('formulations/create/', create_formulation_view, name='create_formulation'),
+    path('formulations/', formulation_list_view, name='formulation_list'),
+    path('formulations/<int:pk>/edit/', edit_formulation_view, name='edit_formulation'),
 ]

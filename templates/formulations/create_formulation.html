@@ -7,9 +7,20 @@
 
 <section class="bg-green-50 dark:bg-gray-900">
     <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-        <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">New Formulation</h2>
-    
-        <form action="{% url 'create_formulation' %}" class="space-y-8" method="post">
+        {% if form.instance.pk %}
+            <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Edit Formulation: {{ form.instance.name }}</h1>
+        {% else %}
+            <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Create New Formulation</h1>
+        {% endif %}
+        
+        
+        {% if form.instance.pk %}
+            {% url 'edit_formulation' form.instance.pk as action_url %}
+        {% else %}
+            {% url 'create_formulation' as action_url %}
+        {% endif %}
+
+        <form method="post" class="space-y-8" action="{{ action_url }}">
 
             {% csrf_token %}
 
@@ -39,6 +50,8 @@
                 <div id="ingredient-formset">
                     {{ ingredient_formset.management_form }}
                     {% for iform in ingredient_formset %}
+                        {{ iform.id }}  
+
                         <div class="ingredient-form block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                 
@@ -64,7 +77,7 @@
 
                                 {% if iform.DELETE %}
                                     <div class="flex justify-end mt-2">
-                                        <!-- {{ iform.DELETE }} -->
+                                       
                                         <input type="checkbox"
                                             name="{{ iform.DELETE.html_name }}"
                                             id="{{ iform.DELETE.id_for_label }}"

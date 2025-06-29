@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, BaseInlineFormSet
 from .models import Formulation, FormulationIngredient, Ingredient
 
 class RegistrationForm(UserCreationForm):
@@ -81,6 +81,7 @@ class IngredientForm(forms.ModelForm):
     } 
    
 class FormulationIngredientForm(forms.ModelForm):
+    # for one row / ingredient wthin the formulation
     class Meta: 
         model = FormulationIngredient
         fields = ["ingredient", "percentage"]
@@ -92,10 +93,26 @@ class FormulationIngredientForm(forms.ModelForm):
         'percentage': 'Concentration',
     } 
 
+
+class TotalPercentageFormSet(BaseInlineFormSet):
+    # check percentage condition before the data are safed to db
+    def clean(self):
+        super().clean()
+        total = 0
+        for form in self.forms:
+            if self.can_delete and self._should_delete_form(form):
+                continue
+            if form.cleaned_data.get('percentage') is not None:
+                total += form.cleaned_data['percentage']
+        if total and not (99.99 <= total <= 100.01):
+            raise ValidationError("The total percentage must sum to 100%.")
+        
+
 FormulationIngredientFormSet = inlineformset_factory(
     Formulation, 
     FormulationIngredient,
     form = FormulationIngredientForm,
-    extra=1,    
-    can_delete=True,
+    formset = TotalPercentageFormSet, 
+    extra = 1,    
+    can_delete = True,
 )

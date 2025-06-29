@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User 
 from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.core.exceptions import ValidationError 
+from django.db.models import Sum 
 
 
 # Create your models here.
@@ -79,6 +81,29 @@ class Formulation(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+    def validate_total_percentage(self):
+        # for not save formulation
+        if not self.pk:
+            return
+        
+        # For saved formulation
+        total_percentage = sum(
+            fi.percentage for fi in self.formulationingredient_set.all()
+            if fi.percentage is not None
+        )
+
+        # Allow saving empty formulation
+        # for the admin workflow where ingredients are added on a subsequent page. (also a user can create an empty formula)
+        if total_percentage == 0.0:
+            return 
+
+        # Check if the total percentage is approximately 100.00
+        if not (99.99 <= total_percentage <= 100.01):
+            raise ValidationError(
+                f'The total percentage of all ingredients within the formulation must sum to 100% (currently: {total_percentage:.2f}%).',
+                code='invalid_total_percentage'
+            )    
 
 
 class FormulationIngredient(models.Model):

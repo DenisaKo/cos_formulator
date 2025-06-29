@@ -1,5 +1,7 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from formulations.forms import RegistrationForm, FormulationForm, IngredientForm, FormulationIngredientForm, FormulationIngredientFormSet
 from formulations.models import Formulation
@@ -26,23 +28,34 @@ def create_formulation_view(request):
     if request.method == 'POST':
         # print("Submitted POST data:", request.POST)
         form = FormulationForm(request.POST)
-        # ingredient_formset = FormulationIngredientFormSet(request.POST, prefix='form') 
+        ingredient_formset = FormulationIngredientFormSet(request.POST, prefix='form')
         
         if form.is_valid():
-            # When creating a NEW formulation, the instance of it won't exist yet for the FormSet until the Formulation is saved. 
-            formulation = form.save(commit=False) 
-            formulation.user = request.user # Set the user
-            formulation.save() 
-            # formulation must exist - to has pk for PhaseFormSet
-            ingredient_formset = FormulationIngredientFormSet(request.POST, instance=formulation, prefix='form')
+            try:
+                # all or nothing - if something fails, no chenges are saved
+                with transaction.atomic():  
+                    # When creating a NEW formulation, the instance of it won't exist yet for the FormSet until the Formulation is saved. 
+                    formulation = form.save(commit=False) 
+                    formulation.user = request.user # Set the user
+                    formulation.save() 
+                    # formulation must exist - to has pk for FormSet
+                    ingredient_formset = FormulationIngredientFormSet(request.POST, instance=formulation, prefix='form')
 
-            if ingredient_formset.is_valid():
-                ingredient_formset.save()
-                return redirect('formulation_list')
+                    if ingredient_formset.is_valid():
+                        ingredient_formset.save()
+                        formulation.validate_total_percentage()
+                        return redirect('profile')
                 
-            else:
-                # If phase formset fails, delete the parent formulation that was just saved.
-                formulation.delete()
+                    else:
+                        # If ingredient formset fails, raise validation error
+                        raise ValidationError("Invalid ingredients")
+                    
+            except ValidationError as e:
+                # Form or formset invalid → re-render with error
+                form.add_error(None, e.message)
+                form = FormulationForm(request.POST)
+                ingredient_formset = FormulationIngredientFormSet(request.POST, prefix='form')
+
     else:
         form = FormulationForm()
         ingredient_formset = FormulationIngredientFormSet(prefix='form')
@@ -62,17 +75,20 @@ def edit_formulation_view(request, pk):
         ingredient_formset = FormulationIngredientFormSet(request.POST, instance=formulation, prefix='form')
 
         if form.is_valid():
-            # print("form is valid")
-            form.save()
-            if ingredient_formset.is_valid():
-                # print("ingredient_formset is valid")
-                ingredient_formset.save()
-                return redirect('formulation_list') 
-                # for ingredient_form in ingredient_formset:
-                #     print(ingredient_form.cleaned_data)
-        else: 
-            print("Formset errors:", ingredient_formset.errors)
-        
+            try:
+                with transaction.atomic():
+                    form.save()
+                    if ingredient_formset.is_valid():
+                        ingredient_formset.save()
+                        formulation.validate_total_percentage()
+                        return redirect('profile') 
+                    else:
+                        # If ingredient formset fails, raise validation error
+                        raise ValidationError("Invalid ingredients")
+            except ValidationError as e:
+                # Form or formset invalid → re-render with error
+                form.add_error(None, e.message)
+    
     else:
         form = FormulationForm(instance=formulation)
         ingredient_formset = FormulationIngredientFormSet(instance=formulation, prefix='form')

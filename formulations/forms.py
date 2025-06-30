@@ -39,21 +39,35 @@ class FormulationForm(forms.ModelForm):
         model = Formulation
         fields = ["name", "description", "batch_size_grams"]
 
-    widgets = {
-        'name': forms.TextInput(attrs={'placeholder': 'e.g., Hydrating Face Cream'}),
-        'description': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Describe your formulation (e.g., Intensive moisturising cream)'}),
-        'instructions': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Step-by-step guide for making this formulation...'}),
-        'batch_size_grams': forms.NumberInput(attrs={'placeholder': 'e.g., 100.00'})
-    }
-    labels = {
-        'name': 'Formulation name',
-        'description': 'Description',
-        'instructions': 'Instructions',
-        'batch_size_grams': 'Batch Size (grams)',
-    } 
-    help_texts = {
-        'batch_size_grams': 'Enter the target batch size in grams (e.g., 100.00 for a 100g batch). Must be 0 or a positive number.',
-    }
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'e.g., Hydrating Face Cream',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'description': forms.Textarea(attrs={
+                'rows': 2, 
+                'placeholder': 'Describe your formulation (e.g., Intensive moisturising cream)',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'instructions': forms.Textarea(attrs={
+                'rows': 2, 
+                'placeholder': 'Step-by-step guide for making this formulation...',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'batch_size_grams': forms.NumberInput(attrs={
+                'placeholder': 'e.g., 100.00',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                })
+        }
+        labels = {
+            'name': 'Formulation name',
+            'description': 'Description',
+            'instructions': 'Instructions',
+            'batch_size_grams': 'Batch Size (grams)',
+        } 
+        help_texts = {
+            'batch_size_grams': 'Enter the target batch size in grams (e.g., 100.00 for a 100g batch). Must be 0 or a positive number.',
+        }
 
 class IngredientForm(forms.ModelForm):
     """
@@ -63,22 +77,41 @@ class IngredientForm(forms.ModelForm):
         model = Ingredient
         fields = ["name", "inci_name", "functionality", "solubility", "physical_state", "recommended_concentration", "notes"]
 
-    widgets = {
-        'name': forms.TextInput(attrs={'placeholder': 'e.g., Hydrating Face Cream'}),
-        'inci_name': forms.TextInput(attrs={'placeholder': 'e.g., Sodium Chloride'}),
-        'functionality': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Describe your formulation (e.g., Intensive moisturising cream)'}),
-        'notes': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Step-by-step guide for making this formulation...'}),
-        'recommended_concentration': forms.TextInput(attrs={'placeholder': 'e.g., 5-10%'})
-    }
-    labels = {
-        'name': 'Ingredient name',
-        'inci_name': 'Ingredient INCI name',
-        'functionality': 'Functionality',
-        'notes': 'Notes',
-        'recommended_concentration': 'Recommended concentration',
-        'solubility': 'Solubility',
-        'physical_state': 'Physical state',
-    } 
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'e.g., Hydrating Face Cream',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'inci_name': forms.TextInput(attrs={
+                'placeholder': 'e.g., Sodium Chloride',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'functionality': forms.Textarea(attrs={
+                'rows': 2, 
+                'placeholder': 'Describe your formulation (e.g., Intensive moisturising cream)',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'notes': forms.Textarea(attrs={
+                'rows': 2, 
+                'placeholder': 'Step-by-step guide for making this formulation...',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'recommended_concentration': forms.TextInput(attrs={
+                'placeholder': 'e.g., 5-10%',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500',
+                }),
+            'solubility': forms.Select(attrs={'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'}),
+            'physical_state': forms.Select(attrs={'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'})
+        }
+        labels = {
+            'name': 'Ingredient name',
+            'inci_name': 'Ingredient INCI name',
+            'functionality': 'Functionality',
+            'notes': 'Notes',
+            'recommended_concentration': 'Recommended concentration',
+            'solubility': 'Solubility',
+            'physical_state': 'Physical state',
+        } 
    
 class FormulationIngredientForm(forms.ModelForm):
     # for one row / ingredient wthin the formulation
@@ -86,12 +119,12 @@ class FormulationIngredientForm(forms.ModelForm):
         model = FormulationIngredient
         fields = ["ingredient", "percentage"]
 
-    widgets = {
-        'percentage': forms.NumberInput(attrs={'placeholder': 'e.g., 5,00'}),
-    }
-    labels = {
-        'percentage': 'Concentration',
-    } 
+        widgets = {
+            'percentage': forms.NumberInput(attrs={'placeholder': 'e.g., 5,00'}),
+        }
+        labels = {
+            'percentage': 'Concentration',
+        } 
 
 
 class TotalPercentageFormSet(BaseInlineFormSet):

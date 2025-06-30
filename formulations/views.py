@@ -2,7 +2,9 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from formulations.forms import RegistrationForm, FormulationForm, IngredientForm, FormulationIngredientForm, FormulationIngredientFormSet
 from formulations.models import Formulation
 
@@ -59,10 +61,12 @@ def create_formulation_view(request):
     else:
         form = FormulationForm()
         ingredient_formset = FormulationIngredientFormSet(prefix='form')
+        ingredient_form = IngredientForm()
 
     context = {
         'form': form, 
         'ingredient_formset': ingredient_formset, 
+        'ingredient_form': ingredient_form,
     }
     return render(request, 'formulations/create_formulation.html', context)
 
@@ -112,3 +116,21 @@ def delete_formulation_view(request, pk):
         print("deleting formulation, ",  formulation)
         formulation.delete()
     return redirect('profile') 
+
+@require_POST
+def create_ingredient_view(request):
+    form = IngredientForm(request.POST)
+    if form.is_valid():
+        ingredient = form.save()
+        return JsonResponse({
+            'success': True,
+            'id': ingredient.id,
+            'name': ingredient.name,
+            'message': 'Ingredient created successfully.'
+        })
+    else:
+        return JsonResponse({
+            'success': False,
+            'errors': form.errors
+        }, status=400)
+   

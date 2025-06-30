@@ -101,31 +101,43 @@ document.addEventListener('DOMContentLoaded', function () {
     function updatePercentageSum() {
         let total = 0;
         const percentageInputs = document.querySelectorAll('input[name$="-percentage"]');
+        const batchSize = document.getElementById('id_batch_size_grams');
+        const valueBatchSize = parseFloat(batchSize.value.replace(',', '.'));
+
         percentageInputs.forEach(input => {
             const parentDiv = input.closest('div').parentElement; 
             const deleteCheckbox = parentDiv.querySelector('input[name$="-DELETE"]');
             // console.log('deleteCheckbox', deleteCheckbox);
             const value = parseFloat(input.value.replace(',', '.')); // In case user uses comma
+
+
+            // live weight calculation
+            const weight = parentDiv.querySelector('[name$="-percentage-weight"]');
+            const weightValue = value/100 * valueBatchSize;
+            
+
+
             if (!isNaN(value)) {
                 total += value;
-                console.log('checkbox is addded')
+                weight.textContent = `${weightValue} g`;
+                // console.log('checkbox is addded')
                 if (deleteCheckbox.value == "on" && deleteCheckbox.checked){
-                    console.log('checkbox is checked', deleteCheckbox.value);
-                    console.log('checkbox is checked', deleteCheckbox.checked);
-                    console.log('checkbox is substracted');
+                    // console.log('checkbox is checked', deleteCheckbox.value);
+                    // console.log('checkbox is checked', deleteCheckbox.checked);
+                    // console.log('checkbox is substracted');
                     total -= value;
                 }
                 else {
-                    console.log('checkbox is not substracted');
+                    // console.log('checkbox is not substracted');
                 }
             }
             else {
-                console.log('value is null');
-            }
+                // console.log('value is null');
+            }           
+
         });
     
         const sumDisplay = document.getElementById("percentage-sum");
-        const feedback = document.getElementById("percentage-feedback");
         const saveBtn = document.getElementById("save-button");
         saveBtn.disabled = true;
     
@@ -150,8 +162,9 @@ document.addEventListener('DOMContentLoaded', function () {
             input.removeEventListener("input", updatePercentageSum);
             input.addEventListener("input", updatePercentageSum);
         });
+        const batchSize = document.getElementById('id_batch_size_grams');
+        batchSize.addEventListener("input", updatePercentageSum)
     }
-    
 
 });
 

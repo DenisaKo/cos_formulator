@@ -1,21 +1,21 @@
 
 // console.log("formset.js loaded");
 document.addEventListener('DOMContentLoaded', function () {
-
+   
     // create_formulation.html logic
     const addBtn = document.getElementById('add-ingredient');
     if (addBtn) {
         
         const formsetContainer = document.getElementById('ingredient-formset');
         const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
-
+        
 
         addBtn.addEventListener('click', function () {
             // console.log("Add button clicked!");
             const currentFormCount = parseInt(totalForms.value);
             const allForms = formsetContainer.querySelectorAll('.ingredient-form');
             const lastForm = allForms[allForms.length - 1];
-            console.log("lastForm", lastForm);
+            // console.log("lastForm", lastForm);
         
             const newForm = lastForm.cloneNode(true);
             newForm.style.display = 'block';
@@ -36,44 +36,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Added row has delete btn, attached listener for deletion
             bindDeleteButtons();
+            bindPercentageSum();
         });
 
-        function bindDeleteButtons() {
-            const deleteButtons = document.querySelectorAll('.delete-row-btn');
-
-            deleteButtons.forEach(btn => {
-                btn.removeEventListener('click', handleDelete); // remove previous binding if any
-                btn.addEventListener('click', handleDelete);
-            });
-        }
-
-        function handleDelete(event) {
-            const button = event.target;
-            const formRow = button.closest('.ingredient-form');
-            // console.log("Delete button clicked", formRow);
-            const deleteField = formRow.querySelector('input[name$="-DELETE"]');
-            console.log("Found delete field:", deleteField);
-
-            if (deleteField) {
-                // tells Django to check the checkbox/input for deletion
-                console.log("Before:", deleteField.checked); // false
-                deleteField.checked = true;
-            
-                if (!deleteField.checked) deleteField.click();
-                console.log("After:", deleteField.checked);  // true
-
-                deleteField.value = "on";
-                // hide from the user
-                formRow.style.display = 'none';
-                // document.querySelectorAll('input[name$="-DELETE"]').forEach(input => {
-                //     console.log(input.name, input.checked);
-                // });
-            } else {
-                console.warn("Delete input not found in row!");
-            }
-        }
-            // Initial binding
+      
+        // Initial binding
         bindDeleteButtons();
+        bindPercentageSum();
+        updatePercentageSum();
+    }
+
+    // row removing
+    function bindDeleteButtons() {
+        const deleteButtons = document.querySelectorAll('.delete-row-btn');
+
+        deleteButtons.forEach(btn => {
+            btn.removeEventListener('click', handleDelete); // remove previous binding if any
+            btn.addEventListener('click', handleDelete);
+        });
+    }
+
+    function handleDelete(event) {
+        const button = event.target;
+        const formRow = button.closest('.ingredient-form');
+        // console.log("Delete button clicked", formRow);
+        const deleteField = formRow.querySelector('input[name$="-DELETE"]');
+        console.log("Found delete field:", deleteField);
+
+        if (deleteField) {
+            // tells Django to check the checkbox/input for deletion
+            console.log("Before:", deleteField.checked); // false
+            deleteField.checked = true;
+        
+            if (!deleteField.checked) deleteField.click();
+            console.log("After:", deleteField.checked);  // true
+
+            deleteField.value = "on";
+            // hide from the user
+            formRow.style.display = 'none';
+            // document.querySelectorAll('input[name$="-DELETE"]').forEach(input => {
+            //     console.log(input.name, input.checked);
+            // });
+        } else {
+            console.warn("Delete input not found in row!");
+        }
+        updatePercentageSum();
+
     }
 
     // profile.html logic
@@ -89,6 +97,61 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // percentage validation
+    function updatePercentageSum() {
+        let total = 0;
+        const percentageInputs = document.querySelectorAll('input[name$="-percentage"]');
+        percentageInputs.forEach(input => {
+            const parentDiv = input.closest('div').parentElement; 
+            const deleteCheckbox = parentDiv.querySelector('input[name$="-DELETE"]');
+            // console.log('deleteCheckbox', deleteCheckbox);
+            const value = parseFloat(input.value.replace(',', '.')); // In case user uses comma
+            if (!isNaN(value)) {
+                total += value;
+                console.log('checkbox is addded')
+                if (deleteCheckbox.value == "on" && deleteCheckbox.checked){
+                    console.log('checkbox is checked', deleteCheckbox.value);
+                    console.log('checkbox is checked', deleteCheckbox.checked);
+                    console.log('checkbox is substracted');
+                    total -= value;
+                }
+                else {
+                    console.log('checkbox is not substracted');
+                }
+            }
+            else {
+                console.log('value is null');
+            }
+        });
+    
+        const sumDisplay = document.getElementById("percentage-sum");
+        const feedback = document.getElementById("percentage-feedback");
+        const saveBtn = document.getElementById("save-button");
+        saveBtn.disabled = true;
+    
+        sumDisplay.textContent = `${total.toFixed(2)}%`;
+    
+        if (total >= 99.99 && total <= 100.01) {
+            sumDisplay.classList.remove("text-pink-600");
+            sumDisplay.classList.add("text-green-600");
+            saveBtn.disabled = false;
+            saveBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        } else {
+            sumDisplay.classList.remove("text-green-600");
+            sumDisplay.classList.add("text-pink-600");
+            saveBtn.disabled = true;
+            saveBtn.classList.add("opacity-50", "cursor-not-allowed");
+        }
+    }
+
+    function bindPercentageSum(){
+        const percentageInputs = document.querySelectorAll('input[name$="-percentage"]');
+        percentageInputs.forEach(input => {
+            input.removeEventListener("input", updatePercentageSum);
+            input.addEventListener("input", updatePercentageSum);
+        });
+    }
+    
 
 });
 

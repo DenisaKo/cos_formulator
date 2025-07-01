@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             newForm.querySelectorAll('input, textarea, select').forEach(input => {
                 if (input.type !== 'hidden') input.value = '';
             });
+            newForm.querySelector('[name$="-percentage-weight"]').textContent = '';
 
             // Append new line
             formsetContainer.appendChild(newForm);

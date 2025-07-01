@@ -28,15 +28,22 @@
                 </div>
             </li>
             </ol>
-        </nav>
-        <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Edit Formula</h2>
-        </div>
+            {% if form.instance.pk %}
+                </nav>
+                    <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">Edit Formula</h2>
+                </div>
+            {% else %}
+                </nav>
+                    <h2 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">New Formula</h2>
+                </div>
+            {% endif %}
+        
     
     </div>
 
     <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
         {% if form.instance.pk %}
-            <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Edit Formulation: {{ form.instance.name }}</h1>
+            <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">{{ form.instance.name }}</h1>
         {% else %}
             <h1 class="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">Create New Formulation</h1>
         {% endif %}
@@ -71,14 +78,7 @@
                         <label for="{{ field.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             {{ field.label_tag }}
                         </label>
-                            {{ field }}
-                        <!-- <input type="{{ field.widget_type }}" name="{{ field.html_name }}" id="{{ field.id_for_label }}"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="{{ field.label }}"
-                            {% if field.field.required %}required{% endif %}
-                            {% if field.value %}value="{{ field.value }}"{% endif %}
-                        > -->
-                     
+                            {{ field }}                     
                         {% for error in field.errors %}
                             <p class="text-red-500 text-xs italic">{{ error }}</p>
                         {% endfor %}
@@ -102,7 +102,7 @@
                             </div>
                         {% endif %}
 
-                    {% for iform in ingredient_formset %}
+                        {% for iform in ingredient_formset %}
                         {{ iform.id }}  
 
                         <div class="ingredient-form block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -128,16 +128,15 @@
                                         <p class="text-red-500 text-xs">{{ iform.percentage.errors }}</p>
                                     {% endif %}
 
-                                    <!-- {% for error in iform.errors %}
-                                        <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
-                                    {% endfor %} -->
-
                                 </div>
 
-                                <div>
+                                <div class="flex flex-col justify-between items-center"> 
                                     <p class="weight-feedback"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                        Weight: <span class="ingredient-weight" name="{{iform.percentage.id_for_label}}-weight"></span>
+                                        Weight: 
                                     </p>
+                                    <div class="py-4">
+                                        <span class="ingredient-weight" name="{{iform.percentage.id_for_label}}-weight"></span>
+                                    </div>
                                 </div>
 
                                 {% if iform.DELETE %}
@@ -155,22 +154,18 @@
                                        
                                     </div>
                                 {% endif %}
-                
+                                
                             </div>
                         </div>
                     {% endfor %}
                 </div>
 
+                <div class="flex justify-between m-5">
+                    <button type="button" id="add-ingredient" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-pink-700 sm:w-fit hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">
+                        + Add
+                    </button>
+
                 
-                <button type="button" id="add-ingredient" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-pink-700 sm:w-fit hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">
-                    + Add new ingredient into your formula
-               </button>
-
-                <!-- <button type="button" id="add-new-ingredient" class="py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-purple-700 sm:w-fit hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800">
-                 Create ingredient
-                </button> -->
-
-                <div class="flex justify-center m-5">
                     <button id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal" class="block text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800" type="button">
                     Create new ingredient
                     </button>

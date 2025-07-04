@@ -96,11 +96,14 @@ def edit_formulation_view(request, pk):
     else:
         form = FormulationForm(instance=formulation)
         ingredient_formset = FormulationIngredientFormSet(instance=formulation, prefix='form')
+        ingredient_form = IngredientForm()
 
     context = {
         'form': form,
         'ingredient_formset': ingredient_formset,
         'formulation': formulation,
+        'ingredient_form': ingredient_form,
+        
     }
     return render(request, 'formulations/create_formulation.html', context)
 

@@ -28,14 +28,6 @@ This project was developed as part of IU’s course *Project: Java and Web Devel
 
 Follow these steps to set up the project locally.
 
-### 1. **Clone the repository**
-
-```bash
-git clone https://github.com/yourusername/cosformulator.git
-cd cosformulator
-```
- 
-
 ### **1. Clone the repository**  
 ```sh
 git clone https://github.com/DenisaKo/cos_formulator
@@ -78,6 +70,15 @@ python3 manage.py loaddata ingredients/ingredients.json
 python3 manage.py runserver
 ```
 App will be available at **http://127.0.0.1:8000/**  
+
+
+### **7. Stop the app after use** 
+
+- stop the server (contol+c) and deactivate the virtual environment
+```sh
+deactivate
+```
+
 
 ## 📜 License
 

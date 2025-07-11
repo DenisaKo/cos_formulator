@@ -1,0 +1,223 @@
+[
+{
+  "model": "formulations.ingredient",
+  "pk": 1,
+  "fields": {
+    "name": "Water",
+    "inci_name": "water",
+    "functionality": "solvent",
+    "solubility": "water",
+    "physical_state": "liquid",
+    "recommended_concentration": "2",
+    "notes": "wefwe"
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 3,
+  "fields": {
+    "name": "Mineral oil",
+    "inci_name": "Parafinum Liquidum",
+    "functionality": "emolient",
+    "solubility": "oil",
+    "physical_state": "liquid",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 4,
+  "fields": {
+    "name": "Sodium chloride",
+    "inci_name": "Sodium Chloride",
+    "functionality": null,
+    "solubility": "water",
+    "physical_state": "powder",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 5,
+  "fields": {
+    "name": "SLES",
+    "inci_name": "Sodium Laureth Sulfate",
+    "functionality": "surfactant",
+    "solubility": "water",
+    "physical_state": "paste",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 6,
+  "fields": {
+    "name": "D-pantenol",
+    "inci_name": "panthenol",
+    "functionality": "conditioning",
+    "solubility": "water",
+    "physical_state": "liquid",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 18,
+  "fields": {
+    "name": "Glycerin",
+    "inci_name": "Glycerin",
+    "functionality": "humectant",
+    "solubility": "water",
+    "physical_state": "liquid",
+    "recommended_concentration": "2 - 10",
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 27,
+  "fields": {
+    "name": "Carbomer",
+    "inci_name": "carbomer",
+    "functionality": "thickener",
+    "solubility": "water",
+    "physical_state": "powder",
+    "recommended_concentration": "0.2 - 1.0",
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 28,
+  "fields": {
+    "name": "Microcare PEHG",
+    "inci_name": "Phenoxyethanol and Ethylhexylglycerin",
+    "functionality": "preservative",
+    "solubility": "dispersible",
+    "physical_state": "liquid",
+    "recommended_concentration": "0.8 - 1.0",
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 29,
+  "fields": {
+    "name": "Plantacare 818",
+    "inci_name": "Coco-Glucoside",
+    "functionality": "surfactant",
+    "solubility": "water",
+    "physical_state": "liquid",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 30,
+  "fields": {
+    "name": "Flavol BMK",
+    "inci_name": "Cocamidopropyl Betaine",
+    "functionality": "surfactant",
+    "solubility": "water",
+    "physical_state": "liquid",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 31,
+  "fields": {
+    "name": "Lanetto O",
+    "inci_name": "Cetearyl Alcohol",
+    "functionality": "emulsifier",
+    "solubility": "oil",
+    "physical_state": "pellets",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 32,
+  "fields": {
+    "name": "Myritol 312",
+    "inci_name": "Caprylic/Capric Triglyceride",
+    "functionality": "emolient",
+    "solubility": "oil",
+    "physical_state": "liquid",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 33,
+  "fields": {
+    "name": "Pentylen Glycol",
+    "inci_name": "Penthylene Glycol",
+    "functionality": "humectant",
+    "solubility": "water",
+    "physical_state": "liquid",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 34,
+  "fields": {
+    "name": "Sodium benzoate",
+    "inci_name": "sodium benzoate",
+    "functionality": "preservative",
+    "solubility": "water",
+    "physical_state": "powder",
+    "recommended_concentration": "0.5 - 0.6",
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 35,
+  "fields": {
+    "name": "Vaseline",
+    "inci_name": "Petrolatum",
+    "functionality": "emolient",
+    "solubility": "oil",
+    "physical_state": "paste",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 36,
+  "fields": {
+    "name": "Bee wax",
+    "inci_name": "Cera Alba",
+    "functionality": "emolient",
+    "solubility": "oil",
+    "physical_state": "pellets",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+},
+{
+  "model": "formulations.ingredient",
+  "pk": 37,
+  "fields": {
+    "name": "Xanthan Gum",
+    "inci_name": "xanthan gum",
+    "functionality": "thickener",
+    "solubility": "water",
+    "physical_state": "powder",
+    "recommended_concentration": null,
+    "notes": ""
+  }
+}
+]
